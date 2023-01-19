@@ -1,9 +1,8 @@
-console.log('Hello world!');
-
+// console.log('Hello world!');
 const question = document.querySelector('#question');
-let choices = Array.from(document.querySelectorAll('.choice-text'));
+const choices = Array.from(document.querySelectorAll('.choice-text'));
 
-console.log(question);
+// console.log(question);
 console.log(choices);
 
 let currentQuestion = {};
@@ -11,6 +10,10 @@ let acceptingAnswers = true;
 let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
+
+const CORRECT_BONUS = 10;
+const MAX_QUESTIONS = availableQuestions.length;
+console.log(MAX_QUESTIONS);
 
 let questions = [
 	{
@@ -40,14 +43,33 @@ let questions = [
 	},
 ];
 
-// Constats
-
-const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 3;
-
 startGame = () => {
 	questionCounter = 0;
 	score = 0;
 	availableQuestions = [...questions];
+	console.log(availableQuestions);
 	getNewQuestion();
 };
+
+console.log(availableQuestions);
+startGame();
+
+getNewQuestion = () => {
+	questionCounter++;
+	let questionIndex = Math.floor(Math.random() * MAX_QUESTIONS);
+	console.log(questionIndex);
+	currentQuestion = questions[questionIndex];
+	console.log(currentQuestion);
+	question.innerText = currentQuestion.question;
+
+	choices.forEach((choice) => {
+		const number = choice.dataset['number'];
+		choice.innerText = currentQuestion['choice' + number];
+	});
+};
+
+// Checking the selected answer with answers from the questions array
+
+//
+
+getNewQuestion();
