@@ -41,6 +41,7 @@ startGame = () => {
 	questionCounter = 0;
 	score = 0;
 	availableQuestions = [...list_of_questions];
+	console.log(availableQuestions);
 	getNewQuestion();
 };
 
@@ -52,18 +53,18 @@ getNewQuestion = () => {
 
 	questionCounter++;
 	let questionIndex = Math.floor(Math.random() * availableQuestions.length);
-	currentQuestion = availableQuestions[questionIndex];
-	questionHTML.innerText = currentQuestion.question;
+	selectedQuestion = availableQuestions[questionIndex];
+	questionHTML.innerText = selectedQuestion.question;
 
 	choices.forEach((choice) => {
 		const number = choice.dataset['number'];
-		choice.innerText = currentQuestion['choice' + number];
+		choice.innerText = selectedQuestion['choice' + number];
 	});
 
 	availableQuestions.splice(questionIndex, 1);
-	console.log(availableQuestions);
 
 	acceptingAnswers = true;
+	// console.log(selectedQuestion.answer);
 };
 
 choices.forEach((choice) => {
@@ -74,7 +75,26 @@ choices.forEach((choice) => {
 		const selectedChoice = e.target;
 		const selectedAnswer = selectedChoice.dataset['number'];
 
-		getNewQuestion();
+		let classToApply = 'incorrect';
+		if (selectedAnswer == selectedQuestion.answer) {
+			classToApply = 'correct';
+			score++;
+		}
+
+		// ----- Different version of implementation "classToApply" then the one above -------------
+		//																							|
+		// const classToApply =																		|
+		// 	selectedAnswer == selectedQuestion.answer ? 'correct' : 'incorrect';					|
+		//------------------------------------------------------------------------------------------
+
+		console.log(classToApply);
+
+		selectedChoice.parentElement.classList.add(classToApply);
+
+		setTimeout(() => {
+			selectedChoice.parentElement.classList.remove(classToApply);
+			getNewQuestion();
+		}, 1000);
 	});
 });
 
