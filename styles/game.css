@@ -31,3 +31,33 @@
 .incorrect {
     background-color: #dc3545;
 }
+
+
+/* HUD */
+
+#hud {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hud-prefix {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+
+.hud-main-text {
+    padding: 1.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
