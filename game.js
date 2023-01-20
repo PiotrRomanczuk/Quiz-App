@@ -1,21 +1,15 @@
-// console.log('Hello world!');
-const question = document.querySelector('#question');
+const questionHTML = document.querySelector('#question');
 const choices = Array.from(document.querySelectorAll('.choice-text'));
-
-// console.log(question);
-console.log(choices);
+const CORRECT_BONUS = 10;
+const MAX_QUESTIONS = 3;
 
 let currentQuestion = {};
-let acceptingAnswers = true;
+let acceptingAnswers = false;
 let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = availableQuestions.length;
-console.log(MAX_QUESTIONS);
-
-let questions = [
+let list_of_questions = [
 	{
 		question: 'Inside which HTML element do we put the JavaScript??',
 		choice1: '<script>',
@@ -46,30 +40,44 @@ let questions = [
 startGame = () => {
 	questionCounter = 0;
 	score = 0;
-	availableQuestions = [...questions];
-	console.log(availableQuestions);
+	availableQuestions = [...list_of_questions];
 	getNewQuestion();
 };
 
-console.log(availableQuestions);
-startGame();
-
 getNewQuestion = () => {
+	if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
+		// go to the end page
+		return window.location.assign('/end.html');
+	}
+
 	questionCounter++;
-	let questionIndex = Math.floor(Math.random() * MAX_QUESTIONS);
-	console.log(questionIndex);
-	currentQuestion = questions[questionIndex];
-	console.log(currentQuestion);
-	question.innerText = currentQuestion.question;
+	let questionIndex = Math.floor(Math.random() * availableQuestions.length);
+	currentQuestion = availableQuestions[questionIndex];
+	questionHTML.innerText = currentQuestion.question;
 
 	choices.forEach((choice) => {
 		const number = choice.dataset['number'];
 		choice.innerText = currentQuestion['choice' + number];
 	});
+
+	availableQuestions.splice(questionIndex, 1);
+	console.log(availableQuestions);
+
+	acceptingAnswers = true;
 };
 
+choices.forEach((choice) => {
+	choice.addEventListener('click', (e) => {
+		if (!acceptingAnswers) return;
+
+		acceptingAnswers = false;
+		const selectedChoice = e.target;
+		const selectedAnswer = selectedChoice.dataset['number'];
+
+		getNewQuestion();
+	});
+});
+
+startGame();
+
 // Checking the selected answer with answers from the questions array
-
-//
-
-getNewQuestion();
