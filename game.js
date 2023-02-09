@@ -50,8 +50,10 @@ startGame = () => {
 
 getNewQuestion = () => {
 	if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
+		localStorage.setItem('mostRecentScore', score);
+
 		// go to the end page if ther isn;t suppose to be any more Q's
-		return window.location.assign('/end.html');
+		return window.location.assign('./end.html');
 	}
 
 	questionCounter++;
