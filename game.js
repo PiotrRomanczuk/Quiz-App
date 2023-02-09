@@ -2,7 +2,8 @@ const questionHTML = document.querySelector('#question');
 const choices = Array.from(document.querySelectorAll('.choice-text'));
 const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
-const questionCounterText = document.getElementById('questionCounter');
+const progressText = document.getElementById('progress-text');
+const progressBarFull = document.getElementById('progress-bar-full');
 const scoreText = document.getElementById('score');
 
 let currentQuestion = {};
@@ -49,16 +50,20 @@ startGame = () => {
 
 getNewQuestion = () => {
 	if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
-		// go to the end page
+		// go to the end page if ther isn;t suppose to be any more Q's
 		return window.location.assign('/end.html');
 	}
 
 	questionCounter++;
-	questionCounterText.innerText = `${questionCounter}/${MAX_QUESTIONS}`;
+	progressText.innerText = `Question ${questionCounter}/${MAX_QUESTIONS}`;
 
 	let questionIndex = Math.floor(Math.random() * availableQuestions.length);
 	selectedQuestion = availableQuestions[questionIndex];
 	questionHTML.innerText = selectedQuestion.question;
+	// Update thge progress bar
+	let progressFullState = (questionCounter / MAX_QUESTIONS) * 100;
+	console.log(progressFullState);
+	progressBarFull.style.width = `${progressFullState}%`;
 
 	choices.forEach((choice) => {
 		const number = choice.dataset['number'];
@@ -89,7 +94,7 @@ choices.forEach((choice) => {
 
 		// ----- Different version of implementation "classToApply" then the one above -------------
 		//																							|
-		// const classToApply =																		|
+		//  const classToApply =																	|
 		// 	selectedAnswer == selectedQuestion.answer ? 'correct' : 'incorrect';					|
 		//------------------------------------------------------------------------------------------
 
@@ -106,6 +111,7 @@ choices.forEach((choice) => {
 
 incrementScore = (num) => {
 	score += num;
+	console.log(num);
 	scoreText.innerText = score;
 };
 
